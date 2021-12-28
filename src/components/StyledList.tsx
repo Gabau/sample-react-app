@@ -10,7 +10,7 @@ import {
     Paper,
     Typography,
 } from '@material-ui/core';
-import React from 'react';
+import React, { useState } from 'react';
 import Typewriter from 'typewriter-effect';
 import { Link } from 'react-router-dom';
 
@@ -29,8 +29,26 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
+const deflist: string[] = [
+    'Frontend',
+    'Backend',
+    'Relational Database',
+    'More stuff',
+    'Cars',
+    'Angular',
+    'Planes',
+    'Larger sample',
+    'words',
+    'alphabet',
+    'something',
+    'trains',
+    'not trains',
+    'NOT TRAINS',
+];
+
 const StyledList: React.FC = () => {
     const classes = useStyles();
+    const [list, setList] = useState(deflist);
 
     return (
         <Grid container direction="column" justify="center" alignItems="center" className={classes.grid}>
@@ -47,45 +65,14 @@ const StyledList: React.FC = () => {
 
             <br />
 
+            <input
+                onChange={(event) =>
+                    setList(deflist.filter((val) => val.toLowerCase().includes(event.target.value.toLocaleLowerCase())))
+                }
+            />
+
             <Paper elevation={3}>
-                <List className={classes.list}>
-                    <ListItem>
-                        <ListItemIcon>
-                            <Checkbox
-                                edge="start"
-                                classes={{
-                                    root: classes.checkbox,
-                                    checked: classes.checked,
-                                }}
-                            />
-                        </ListItemIcon>
-                        <ListItemText primary="Frontend" />
-                    </ListItem>
-                    <ListItem>
-                        <ListItemIcon>
-                            <Checkbox
-                                edge="start"
-                                classes={{
-                                    root: classes.checkbox,
-                                    checked: classes.checked,
-                                }}
-                            />
-                        </ListItemIcon>
-                        <ListItemText primary="Backend" />
-                    </ListItem>
-                    <ListItem>
-                        <ListItemIcon>
-                            <Checkbox
-                                edge="start"
-                                classes={{
-                                    root: classes.checkbox,
-                                    checked: classes.checked,
-                                }}
-                            />
-                        </ListItemIcon>
-                        <ListItemText primary="Relational Database" />
-                    </ListItem>
-                </List>
+                <List className={classes.list}>{list.map((val) => listItem(val))}</List>
             </Paper>
 
             <br />
@@ -95,6 +82,22 @@ const StyledList: React.FC = () => {
             </Button>
         </Grid>
     );
+    function listItem(primary: string): React.ReactNode {
+        return (
+            <ListItem>
+                <ListItemIcon>
+                    <Checkbox
+                        edge="start"
+                        classes={{
+                            root: classes.checkbox,
+                            checked: classes.checked,
+                        }}
+                    />
+                </ListItemIcon>
+                <ListItemText primary={primary} />
+            </ListItem>
+        );
+    }
 };
 
 export default StyledList;
